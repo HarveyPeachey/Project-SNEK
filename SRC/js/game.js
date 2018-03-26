@@ -1,4 +1,4 @@
-var snake, initialSnakeSize, food, squareSize, score, speed, direction, cursors, newDirection;
+var snake, initialSnakeSize, food, squareSize, score, speed, direction, cursors, newDirection, updateDelay;
 
 
 var Game = {
@@ -55,22 +55,32 @@ var Game = {
         if (cursors.right.isDown && direction!='left') {
             newDirection = 'right';
             snake[0].angle = 90;
+            snake[0].x += 5;
         }
         else if (cursors.left.isDown && direction!='right') {
             newDirection = 'left';
             snake[0].angle = -90;
+            snake[0].x += -5;
         }
         else if (cursors.up.isDown && direction!='down') {
             newDirection = 'up';
             snake[0].angle = 0;
+            snake[0].y += -5;
         }
         else if (cursors.down.isDown && direction!='up') {
             newDirection = 'down';
             snake[0].angle = 180;
+            snake[0].y += 5;
         }
 
         if(newDirection){
             direction = newDirection;
+        }
+
+        updateDelay++;
+
+        if (updateDelay == 10) {
+
         }
     }
 }
