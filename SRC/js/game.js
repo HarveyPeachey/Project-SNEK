@@ -1,4 +1,4 @@
-var snake, initialSnakeSize, food, squareSize, score, speed, direction, cursors, direction;
+var snake, initialSnakeSize, food, squareSize, score, speed, direction, cursors, newDirection;
 
 
 var Game = {
@@ -19,7 +19,7 @@ var Game = {
         snake = [];             // This is a stack to store the snake parts
         initialSnakeSize = 4;   // This is the size of the body of the snake
         food = {};              // Object for the food piece
-        squareSize = 73;        // Size of the grid in pixels
+        squareSize = 73;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
         direction = 'right';    // Chooses the initial direction of the snake
 
@@ -45,6 +45,25 @@ var Game = {
             else {
                 snake[i-1] = game.add.sprite(150, 150 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
             }
+        }
+    }
+
+    update: function () {
+        if (cursors.right.isDown && direction!='left')
+        {
+            newDirection = 'right';
+        }
+        else if (cursors.left.isDown && direction!='right')
+        {
+            newDirection = 'left';
+        }
+        else if (cursors.up.isDown && direction!='down')
+        {
+            newDirection = 'up';
+        }
+        else if (cursors.down.isDown && direction!='up')
+        {
+            newDirection = 'down';
         }
     }
 
