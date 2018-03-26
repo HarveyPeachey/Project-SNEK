@@ -21,7 +21,7 @@ var Game = {
         food = {};              // Object for the food piece
         squareSize = 73;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
-        direction = 'right';    // Chooses the initial direction of the snake
+        direction = 'up';    // Chooses the initial direction of the snake
 
 
         // Set up a Phaser controller for keyboard input.
@@ -35,37 +35,43 @@ var Game = {
 
         for(var i = 0; i < initialSnakeSize; i++) {
             if (i == 0) {
-                snake[i-1] = game.add.sprite(150, 150, 'shead');
+                snake[i] = game.add.sprite(150, 150, 'shead');
+                snake[i].anchor.setTo(0.5);
                 continue;
             }
             else if (i == initialSnakeSize-1) {
-                snake[i-1] = game.add.sprite(150, 150 + i * squareSize, 'stail');
+                snake[i] = game.add.sprite(150, 150 + i * squareSize, 'stail');
+                snake[i].anchor.setTo(0.5);
                 break;
             }
             else {
-                snake[i-1] = game.add.sprite(150, 150 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
+                snake[i] = game.add.sprite(150, 150 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
+                snake[i].anchor.setTo(0.5);
             }
         }
-    }
+    },
 
     update: function () {
-        if (cursors.right.isDown && direction!='left')
-        {
+        if (cursors.right.isDown && direction!='left') {
             newDirection = 'right';
+            snake[0].angle = 90;
         }
-        else if (cursors.left.isDown && direction!='right')
-        {
+        else if (cursors.left.isDown && direction!='right') {
             newDirection = 'left';
+            snake[0].angle = -90;
         }
-        else if (cursors.up.isDown && direction!='down')
-        {
+        else if (cursors.up.isDown && direction!='down') {
             newDirection = 'up';
+            snake[0].angle = 0;
         }
-        else if (cursors.down.isDown && direction!='up')
-        {
+        else if (cursors.down.isDown && direction!='up') {
             newDirection = 'down';
+            snake[0].angle = 180;
+        }
+
+        if(newDirection){
+            direction = newDirection;
         }
     }
-
 }
 
