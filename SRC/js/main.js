@@ -1,4 +1,6 @@
-var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'phaser-example');
+var game;
+
+game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'phaser-example');
 
 game.state.add('Menu', Menu);
 
