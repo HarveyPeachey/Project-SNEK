@@ -1,4 +1,4 @@
-var snake, initialSnakeSize, food, squareSize, score, speed, direction, cursors, newDirection, newGridSquare;
+var snake, initialSnakeSize, food, squareSize, score, speed, fSpeed, direction, cursors, newDirection, newGridSquare, upButton, downButton, leftButton, rightButton;
 
 
 var Game = {
@@ -15,27 +15,34 @@ var Game = {
     },
 
     create: function () {
-
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         snake = [];             // This is a stack to store the snake parts
-        initialSnakeSize = 2;   // This is the size of the body of the snake
+        initialSnakeSize = 5;   // This is the size of the body of the snake
         food = {};              // Object for the food piece
         squareSize = 50;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
         direction = 'up';       // Chooses the initial direction of the snake
         speed = 2;
-
+        fSpeed = 175;
+        
 
         // Set up a Phaser controller for keyboard input.
         cursors = game.input.keyboard.createCursorKeys();
-
+        upButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
+        downButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
         // Adds background to game
         game.add.sprite(0, 0, 'background');
         // Adds food item to game
-        food = game.add.sprite(0, 0, 'food');
-
-
+        food = game.add.sprite(350, 350, 'food');
+        food.anchor.set(0.5);
+        game.physics.enable(food, Phaser.Physics.ARCADE);
+        //make the player collide with the bounds of the world
+        food.body.collideWorldBounds = true;
         // Creates the initial snake based on initialSnakeSize that is set
         for(var i = 0; i < initialSnakeSize; i++) {
+            
             if (i == 0) {
                 snake[i] = game.add.sprite(150, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
@@ -125,7 +132,36 @@ var Game = {
                 snake[i].y += speed;
             }
         }
+
+        //movement of pellet
+        //move the player up and down based on keyboard arrows
+        if (upButton.isDown) {
+            food.body.velocity.y = -fSpeed;
+        }
+        else if (downButton.isDown) {
+            food.body.velocity.y = fSpeed;
+        }
+        else {
+            food.body.velocity.y = 0;
+        }
+
+        //move the player right and left based on keyboard arrows
+        if (leftButton.isDown) {
+            food.body.velocity.x = -fSpeed;
+        }
+        else if (rightButton.isDown) {
+            food.body.velocity.x = fSpeed;
+        }
+        else {
+            food.body.velocity.x = 0;
+        }
+        // game.physics.arcade.overlap(snake, food, snakeWins);
     },
+
+    // snakeWins: function(snake, food) {
+    // // the snake has won the game
+    // this.state.start('GameOver');
+    // },
 
     render: function () {
         game.debug.spriteInfo(snake[0], 32, 32);
