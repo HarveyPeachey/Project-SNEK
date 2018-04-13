@@ -169,7 +169,10 @@ var Game = {
         else {
             food.body.velocity.x = 0;
         }
-        //if food.collides(snake,)        
+        if (snake[0].position.x == food.position.x && snake[0].position.y == food.position.y) 
+        {
+                game.state.start("GameOver");
+        }
     },
 
     render: function () {
