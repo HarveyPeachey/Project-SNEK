@@ -1,4 +1,4 @@
-var snake, initialSnakeSize, food, squareSize, score, speed, fSpeed, direction, cursors, newDirection, newGridSquare, upButton, downButton, leftButton, rightButton;
+var snake, snakeSize, snakeSize, food, squareSize, score, speed, fSpeed, direction, cursors, newDirection, newGridSquare, upButton, downButton, leftButton, rightButton;
 
 
 var Game = {
@@ -11,13 +11,14 @@ var Game = {
         game.load.image('shead', './assets/sprites/shead-50px.png');
         game.load.image('sbody', './assets/sprites/sbody-50px.png');
         game.load.image('stail', './assets/sprites/stail-50px.png');
+        game.load.image('scorner', './assets/sprites/scorner-50px.png');
 
     },
 
     create: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         snake = [];             // This is a stack to store the snake parts
-        initialSnakeSize = 5;   // This is the size of the body of the snake
+        snakeSize = 5;   // This is the size of the body of the snake
         food = {};              // Object for the food piece
         squareSize = 50;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
@@ -41,8 +42,8 @@ var Game = {
         game.physics.enable(food, Phaser.Physics.ARCADE);
         //make the player collide with the bounds of the world
         food.body.collideWorldBounds = true;
-        // Creates the initial snake based on initialSnakeSize that is set
-        for(var i = 0; i < initialSnakeSize; i++) {
+        // Creates the initial snake based on snakeSize that is set
+        for(var i = 0; i < snakeSize; i++) {
             
             if (i == 0) {
                 snake[i] = game.add.sprite(0, 500, 'shead');
@@ -54,7 +55,7 @@ var Game = {
 
                 continue;
             }
-            else if (i == initialSnakeSize-1) {
+            else if (i == snakeSize-1) {
                 snake[i] = game.add.sprite(0, 500 + i * squareSize, 'stail');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
@@ -75,11 +76,15 @@ var Game = {
     },
 
     update: function () {
-
         //--- Rotates snake head in correct direction also stops illegal moves ---
         if (cursors.right.isDown && direction!='left') {
             newDirection = 'right';
             snake[0].angle = 90;
+            // if cursors.right.duration < 1{
+            //     for (var i = 1; i< 5; i++){
+            //             game.add.sprite(snake[0].position.x, snake[0].position.y, 'scorner');
+            //         }
+            // }
             // *PUT IN FUNCTION
             if (direction == 'up') {
                 newGridSquare =  (snake[0].y - (snake[0].y % squareSize))+snake[0].width*0.5;
@@ -169,10 +174,11 @@ var Game = {
         else {
             food.body.velocity.x = 0;
         }
-        if (snake[0].position.x == food.position.x && snake[0].position.y == food.position.y) 
-        {
-                game.state.start("GameOver");
-        }
+        // for int i=0; i<50
+        // if (snake[0].position.x == food.position.x && snake[0].position.y == food.position.y) 
+        // {
+        //         game.state.start("GameOver");
+        // }
     },
 
     render: function () {
