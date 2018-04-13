@@ -49,14 +49,17 @@ var Game = {
                 snake[i] = game.add.sprite(0, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
-                snake[i].y += snake[i].height*0.5;             
+                snake[i].y += snake[i].height*0.5;
+                sGroup.add(snake[i]);              
                 continue;
+
             }
             else if (i == snakeSize-1) {
                 snake[i] = game.add.sprite(0, 500 + i * squareSize, 'stail');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
+                sGroup.add(snake[i]); 
                 break;
             }
             else {
