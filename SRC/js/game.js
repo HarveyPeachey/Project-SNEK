@@ -65,11 +65,10 @@ var Game = {
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
             }
-        game.physics.enable(snake[i], Phaser.Physics.ARCADE);
         sGroup.add(snake[i]); 
         //make the player collide with the bounds of the world
         }
-        
+        game.physics.enable(sGroup, Phaser.Physics.ARCADE);
         
 
         
