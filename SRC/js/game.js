@@ -1,4 +1,4 @@
-var snake, snakeSize, snakeSize, food, squareSize, score, speed, fSpeed, direction, cursors, newDirection, newGridSquare, upButton, downButton, leftButton, rightButton;
+var snake, snakeSize, food, squareSize, score, speed, fSpeed, direction, cursors, newDirection, newGridSquare, upButton, downButton, leftButton, rightButton;
 
 
 var Game = {
@@ -42,17 +42,14 @@ var Game = {
         game.physics.enable(food, Phaser.Physics.ARCADE);
         //make the player collide with the bounds of the world
         food.body.collideWorldBounds = true;
+        sGroup = game.add.group();
         // Creates the initial snake based on snakeSize that is set
         for(var i = 0; i < snakeSize; i++) {
-            
             if (i == 0) {
                 snake[i] = game.add.sprite(0, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
-                snake[i].y += snake[i].height*0.5;
-                game.physics.enable(snake[i], Phaser.Physics.ARCADE);
-                snake[i].body.collideWorldBounds = true;
-
+                snake[i].y += snake[i].height*0.5;             
                 continue;
             }
             else if (i == snakeSize-1) {
@@ -68,10 +65,13 @@ var Game = {
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
             }
-        
+        game.physics.enable(snake[i], Phaser.Physics.ARCADE);
+        sGroup.add(snake[i]); 
         //make the player collide with the bounds of the world
-        
         }
+        
+        
+
         
     },
 
@@ -174,6 +174,11 @@ var Game = {
         else {
             food.body.velocity.x = 0;
         }
+        if (game.physics.arcade.overlap(food, sGroup)){
+            alert("The game is over! Your score was: " + score);
+        }
+        
+
         // for int i=0; i<50
         // if (snake[0].position.x == food.position.x && snake[0].position.y == food.position.y) 
         // {
