@@ -32,6 +32,7 @@ var Game = {
         downButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
         leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
         // Adds background to game
         game.add.sprite(0, 0, 'background');
         // Adds food item to game
@@ -44,18 +45,24 @@ var Game = {
         for(var i = 0; i < initialSnakeSize; i++) {
             
             if (i == 0) {
-                snake[i] = game.add.sprite(150, 500, 'shead');
+                snake[i] = game.add.sprite(0, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
+                snake[i].x += snake[i].width*0.5;
+                snake[i].y += snake[i].height*0.5;
                 continue;
             }
             else if (i == initialSnakeSize-1) {
-                snake[i] = game.add.sprite(150, 500 + i * squareSize, 'stail');
+                snake[i] = game.add.sprite(0, 500 + i * squareSize, 'stail');
                 snake[i].anchor.setTo(0.5);
+                snake[i].x += snake[i].width*0.5;
+                snake[i].y += snake[i].height*0.5;
                 break;
             }
             else {
-                snake[i] = game.add.sprite(150, 500 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
+                snake[i] = game.add.sprite(0, 500 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
                 snake[i].anchor.setTo(0.5);
+                snake[i].x += snake[i].width*0.5;
+                snake[i].y += snake[i].height*0.5;
             }
         }
     },
@@ -68,30 +75,30 @@ var Game = {
             snake[0].angle = 90;
             // *PUT IN FUNCTION
             if (direction == 'up') {
-                newGridSquare =  snake[0].y - (snake[0].y % squareSize);
+                newGridSquare =  (snake[0].y - (snake[0].y % squareSize))+snake[0].width*0.5;
             }
             else if (direction == 'down') {
-                newGridSquare =  snake[0].y + (squareSize - (snake[0].y % squareSize));
+                newGridSquare =  (snake[0].y + (squareSize - (snake[0].y % squareSize)))+snake[0].width*0.5;
             }
         }
         else if (cursors.left.isDown && direction!='right') {
             newDirection = 'left';
             snake[0].angle = -90;
             if (direction == 'up') {
-                newGridSquare =  snake[0].y - (snake[0].y % squareSize);
+                newGridSquare =  (snake[0].y - (snake[0].y % squareSize))+snake[0].width*0.5;
             }
             else if (direction == 'down') {
-                newGridSquare =  snake[0].y + (squareSize - (snake[0].y % squareSize));
+                newGridSquare =  (snake[0].y + (squareSize - (snake[0].y % squareSize)))+snake[0].width*0.5;
             }
         }
         else if (cursors.up.isDown && direction!='down') {
             newDirection = 'up';
             snake[0].angle = 0;
             if (direction == 'left') {
-                newGridSquare =  snake[0].x - (snake[0].x % squareSize);
+                newGridSquare =  (snake[0].x - (snake[0].x % squareSize))+snake[0].height*0.5;
             }
             else if (direction == 'right') {
-                newGridSquare =  snake[0].x + (squareSize - (snake[0].x % squareSize));
+                newGridSquare =  (snake[0].x + (squareSize - (snake[0].x % squareSize)))+snake[0].height*0.5;
             }
 
         }
@@ -99,10 +106,10 @@ var Game = {
             newDirection = 'down';
             snake[0].angle = 180;
             if (direction == 'left') {
-                newGridSquare =  snake[0].x - (snake[0].x % squareSize);
+                newGridSquare =  (snake[0].x - (snake[0].x % squareSize))+snake[0].height*0.5;
             }
             else if (direction == 'right') {
-                newGridSquare =  snake[0].x + (squareSize - (snake[0].x % squareSize));
+                newGridSquare =  (snake[0].x + (squareSize - (snake[0].x % squareSize)))+snake[0].height*0.5;
             }
         }
 
