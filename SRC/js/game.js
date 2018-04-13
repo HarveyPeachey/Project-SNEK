@@ -46,6 +46,8 @@ var Game = {
             if (i == 0) {
                 snake[i] = game.add.sprite(150, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
+                game.physics.enable(snake[i], Phaser.Physics.ARCADE);
+                snake[i].body.collideWorldBounds = true;
                 continue;
             }
             else if (i == initialSnakeSize-1) {
@@ -57,7 +59,11 @@ var Game = {
                 snake[i] = game.add.sprite(150, 500 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
                 snake[i].anchor.setTo(0.5);
             }
+        
+        //make the player collide with the bounds of the world
+        
         }
+        
     },
 
     update: function () {
@@ -155,13 +161,8 @@ var Game = {
         else {
             food.body.velocity.x = 0;
         }
-        // game.physics.arcade.overlap(snake, food, snakeWins);
+        //if food.collides(snake,)        
     },
-
-    // snakeWins: function(snake, food) {
-    // // the snake has won the game
-    // this.state.start('GameOver');
-    // },
 
     render: function () {
         game.debug.spriteInfo(snake[0], 32, 32);
