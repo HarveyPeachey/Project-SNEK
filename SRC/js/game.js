@@ -47,13 +47,11 @@ var Game = {
             if (i == 0) {
                 snake[i] = game.add.sprite(0, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
-<<<<<<< HEAD
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
-=======
                 game.physics.enable(snake[i], Phaser.Physics.ARCADE);
                 snake[i].body.collideWorldBounds = true;
->>>>>>> 880a2defa0fa07abb72ea26922e92e946219976a
+
                 continue;
             }
             else if (i == initialSnakeSize-1) {
