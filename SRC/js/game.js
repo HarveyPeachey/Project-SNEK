@@ -174,7 +174,7 @@ var Game = {
             food.body.velocity.x = 0;
         }
         if (game.physics.arcade.overlap(food, sGroup)){
-            alert("The game is over! Your score was: " + score);
+            game.state.start('GameOver');
         }
         
 
