@@ -204,17 +204,19 @@ var Game = {
             //game.state.start('GameOver');
     },
         
-        
+    //checks whether two sprites overlap up to a certain offset 
     overlapAtOffsetSprite: function(object1, object2, offsetX, offsetY) {
+        //if either of the parameters passed aren't sprites
         if (typeof(object1.body) === "undefined" || typeof(object2.body) === "undefined") {
             return false;
         }
-
+        //creates a new sprite shape from which the overlap will be greater dpeending on the offsets set by the user
         var bounds1 = new Phaser.Rectangle(object1.position.x + object1.body.offset.x -
             object1.anchor.x * object1.width / object1.scale.x +
             offsetX, object1.position.y + object1.body.offset.y -
             object1.anchor.y * object1.height / object1.scale.y +
             offsetY, object1.body.width, object1.body.height);
+        //once again a larger shape is created
         var bounds2 = new Phaser.Rectangle(object2.position.x + object2.body.offset.x -
             object2.anchor.x * object2.width / object2.scale.x,
             object2.position.y + object2.body.offset.y -
@@ -222,17 +224,21 @@ var Game = {
             object2.body.width, object2.body.height);
         return Phaser.Rectangle.intersects(bounds1, bounds2);
     },
+    //this function is used when either of the sprites needed to be checked are a group of sprites
     overlapAtOffset: function(object1, object2, offsetX, offsetY) {
+        //if the first parameter is a group rather than a singular sprite then loop check the overlap against every sprite
         if (object1.physicsType == Phaser.GROUP) {
             for (var i = 0; i < object1.children.length; i++) {
                 if (Game.overlapAtOffset(object1.children[i], object2, offsetX, offsetY))
                     return true;
             }
+        //if the second parameter is a group, then loop
         } else if (object2.physicsType == Phaser.GROUP) {
             for (var i = 0; i < object2.children.length; i++) {
                 if (Game.overlapAtOffset(object1, object2.children[i], offsetX, offsetY))
                     return true;
             }
+        //otherwise it is singular
         } else {
             return Game.overlapAtOffsetSprite(object1, object2, offsetX, offsetY);
         }
