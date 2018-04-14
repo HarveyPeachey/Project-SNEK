@@ -8,7 +8,7 @@ var Game = {
         // In our case, that's just two squares - one for the snake body and one for the apple.
         game.load.image('background', './assets/images/background.jpg');
         game.load.image('food', './assets/sprites/pellet-50px.png');
-        game.load.image('shead', './assets/sprites/shead-50px.png');
+        game.load.image('shead', './assets/sprites/shead-25px.png');
         game.load.image('sbody', './assets/sprites/sbody-50px.png');
         game.load.image('stail', './assets/sprites/stail-50px.png');
         game.load.image('scorner', './assets/sprites/scorner-50px.png');
@@ -18,9 +18,9 @@ var Game = {
     create: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         snake = [];             // This is a stack to store the snake parts
-        snakeSize = 5;   // This is the size of the body of the snake
+        snakeSize = 5;          // This is the size of the body of the snake
         food = {};              // Object for the food piece
-        squareSize = 50;        // Size of the grid in pixels should be same as image size of snake sprites
+        squareSize = 30;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
         direction = 'up';       // Chooses the initial direction of the snake
         speed = 2;
@@ -36,21 +36,22 @@ var Game = {
 
         // Adds background to game
         game.add.sprite(0, 0, 'background');
-        // Adds food item to game
+        // Adds food item to game and enables physics on the food for collision detection
         food = game.add.sprite(350, 350, 'food');
         food.anchor.set(0.5);
         game.physics.enable(food, Phaser.Physics.ARCADE);
-        //make the player collide with the bounds of the world
+        // Make the player collide with the bounds of the world
         food.body.collideWorldBounds = true;
+        // Creates a group for the snake sprites so that collision detection can work for each piece of the snake
         sGroup = game.add.group();
-        // Creates the initial snake based on snakeSize that is set
+        // Loops through and creates the initial snake based on snakeSize that is set
         for(var i = 0; i < snakeSize; i++) {
             if (i == 0) {
                 snake[i] = game.add.sprite(0, 500, 'shead');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
-                sGroup.add(snake[i]);              
+                sGroup.add(snake[i]);   // ????
                 continue;
 
             }
@@ -59,18 +60,19 @@ var Game = {
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
-                sGroup.add(snake[i]); 
+                sGroup.add(snake[i]); // ?????
                 break;
             }
             else {
                 snake[i] = game.add.sprite(0, 500 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
                 snake[i].anchor.setTo(0.5);
-                snake[i].x += snake[i].width*0.5;
-                snake[i].y += snake[i].height*0.5;
+                snake[i].x += snake[i].width * 0.5;
+                snake[i].y += snake[i].height * 0.5;
             }
-        sGroup.add(snake[i]); 
-        //make the player collide with the bounds of the world
+        // This adds each snake to the group for use with collision detection
+        sGroup.add(snake[i]);
         }
+        // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
         
 
@@ -78,7 +80,7 @@ var Game = {
     },
 
     update: function () {
-        //--- Rotates snake head in correct direction also stops illegal moves ---
+        // Rotates snake head in correct direction also stops illegal moves
         if (cursors.right.isDown && direction!='left') {
             newDirection = 'right';
             snake[0].angle = 90;
@@ -127,11 +129,12 @@ var Game = {
             }
         }
 
+        // Checks if the snake heads x and y coordinates have hit the new calculated grid square and changes the direction
         if (snake[0].y == newGridSquare || snake[0].x == newGridSquare) {
             direction = newDirection;
         }
 
-        //--- Changes direction in which snake segments move ---
+        // Changes direction in which snake segments move
 
         if (direction == 'right') {
             for (var i = 0; i < snake.length; i++) {
@@ -154,8 +157,8 @@ var Game = {
             }
         }
 
-        //movement of pellet
-        //move the player up and down based on keyboard arrows
+        // Movement of pellet
+        // Move the player up and down based on keyboard arrows
         if (upButton.isDown) {
             food.body.velocity.y = -fSpeed;
         }
@@ -166,7 +169,7 @@ var Game = {
             food.body.velocity.y = 0;
         }
 
-        //move the player right and left based on keyboard arrows
+        // Move the player right and left based on keyboard arrows
         if (leftButton.isDown) {
             food.body.velocity.x = -fSpeed;
         }
