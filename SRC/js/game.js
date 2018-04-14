@@ -14,7 +14,8 @@ var snake,
     leftButton,
     rightButton,
     updateDelay,
-    gameTimer;
+    gameTimer,
+    startTime;
 
 
 var Game = {
@@ -29,6 +30,10 @@ var Game = {
         game.load.image('stail', './assets/sprites/stail-30px.png');
         game.load.image('scorner', './assets/sprites/scorner-50px.png');
 
+    },
+
+    init: function() {
+        startTime = new Date();
     },
 
     create: function () {
@@ -248,6 +253,7 @@ var Game = {
     render: function () {
         game.debug.spriteInfo(snake[0], 32, 32);
         game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newGridSquare} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
+        game.debug.text(this.game.time.elapsedSecondsSince(startTime), 300, 300);
     }
 }
 
