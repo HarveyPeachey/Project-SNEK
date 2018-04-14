@@ -1,4 +1,20 @@
-var snake, snakeSize, food, squareSize, score, speed, fSpeed, direction, cursors, newDirection, newGridSquare, upButton, downButton, leftButton, rightButton;
+var snake,
+    snakeSize,
+    food,
+    squareSize,
+    score,
+    speed,
+    fSpeed,
+    direction,
+    cursors,
+    newDirection,
+    newGridSquare,
+    upButton,
+    downButton,
+    leftButton,
+    rightButton,
+    updateDelay,
+    gameTimer;
 
 
 var Game = {
@@ -8,9 +24,9 @@ var Game = {
         // In our case, that's just two squares - one for the snake body and one for the apple.
         game.load.image('background', './assets/images/background.jpg');
         game.load.image('food', './assets/sprites/pellet-50px.png');
-        game.load.image('shead', './assets/sprites/shead-25px.png');
-        game.load.image('sbody', './assets/sprites/sbody-50px.png');
-        game.load.image('stail', './assets/sprites/stail-50px.png');
+        game.load.image('shead', './assets/sprites/shead-30px.png');
+        game.load.image('sbody', './assets/sprites/sbody-30px.png');
+        game.load.image('stail', './assets/sprites/stail-30px.png');
         game.load.image('scorner', './assets/sprites/scorner-50px.png');
 
     },
@@ -23,9 +39,10 @@ var Game = {
         squareSize = 30;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
         direction = 'up';       // Chooses the initial direction of the snake
-        speed = 2;
+        speed = 3;
         fSpeed = 175;
-        
+        updateDelay = 0;
+        gameTimer = 0;
 
         // Set up a Phaser controller for keyboard input.
         cursors = game.input.keyboard.createCursorKeys();
@@ -47,7 +64,7 @@ var Game = {
         // Loops through and creates the initial snake based on snakeSize that is set
         for(var i = 0; i < snakeSize; i++) {
             if (i == 0) {
-                snake[i] = game.add.sprite(0, 500, 'shead');
+                snake[i] = game.add.sprite(0, 300, 'shead');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
@@ -56,7 +73,7 @@ var Game = {
 
             }
             else if (i == snakeSize-1) {
-                snake[i] = game.add.sprite(0, 500 + i * squareSize, 'stail');
+                snake[i] = game.add.sprite(0, 300 + i * squareSize, 'stail');
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width*0.5;
                 snake[i].y += snake[i].height*0.5;
@@ -64,7 +81,7 @@ var Game = {
                 break;
             }
             else {
-                snake[i] = game.add.sprite(0, 500 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
+                snake[i] = game.add.sprite(0, 300 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
                 snake[i].anchor.setTo(0.5);
                 snake[i].x += snake[i].width * 0.5;
                 snake[i].y += snake[i].height * 0.5;
@@ -80,6 +97,10 @@ var Game = {
     },
 
     update: function () {
+        updateDelay++;
+        if (updateDelay % 60 == 0) {
+            gameTimer = gameTimer + 1;
+        }
         // Rotates snake head in correct direction also stops illegal moves
         if (cursors.right.isDown && direction!='left') {
             newDirection = 'right';
@@ -96,7 +117,7 @@ var Game = {
             else if (direction == 'down') {
                 newGridSquare =  (snake[0].y + (squareSize - (snake[0].y % squareSize)))+snake[0].width*0.5;
             }
-        }
+        }// Make the player collide with the bounds of the world// Make the player collide with the bounds of the world
         else if (cursors.left.isDown && direction!='right') {
             newDirection = 'left';
             snake[0].angle = -90;
@@ -135,7 +156,6 @@ var Game = {
         }
 
         // Changes direction in which snake segments move
-
         if (direction == 'right') {
             for (var i = 0; i < snake.length; i++) {
                 snake[i].x += speed;
@@ -221,7 +241,7 @@ var Game = {
 
     render: function () {
         game.debug.spriteInfo(snake[0], 32, 32);
-        game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewDirection:${newGridSquare} `, 20, 20, 'yellow', 'Segoe UI');
+        game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newGridSquare} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
     }
 }
 
