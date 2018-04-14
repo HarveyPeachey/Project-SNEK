@@ -176,16 +176,44 @@ var Game = {
         else {
             food.body.velocity.x = 0;
         }
-        if (game.physics.arcade.overlap(food, sGroup)){
-            game.state.start('GameOver');
-        }
+        if (Game.overlapAtOffset(food, sGroup, 16, -10))
+            alert("testing border hit");
+            //game.state.start('GameOver');
+    },
         
+        
+    overlapAtOffsetSprite: function(object1, object2, offsetX, offsetY) {
+        if (typeof(object1.body) === "undefined" || typeof(object2.body) === "undefined") {
+            return false;
+        }
 
-        // for int i=0; i<50
-        // if (snake[0].position.x == food.position.x && snake[0].position.y == food.position.y) 
-        // {
-        //         game.state.start("GameOver");
-        // }
+        var bounds1 = new Phaser.Rectangle(object1.position.x + object1.body.offset.x -
+            object1.anchor.x * object1.width / object1.scale.x +
+            offsetX, object1.position.y + object1.body.offset.y -
+            object1.anchor.y * object1.height / object1.scale.y +
+            offsetY, object1.body.width, object1.body.height);
+        var bounds2 = new Phaser.Rectangle(object2.position.x + object2.body.offset.x -
+            object2.anchor.x * object2.width / object2.scale.x,
+            object2.position.y + object2.body.offset.y -
+            object2.anchor.y * object2.height / object1.scale.y,
+            object2.body.width, object2.body.height);
+        return Phaser.Rectangle.intersects(bounds1, bounds2);
+    },
+    overlapAtOffset: function(object1, object2, offsetX, offsetY) {
+        if (object1.physicsType == Phaser.GROUP) {
+            for (var i = 0; i < object1.children.length; i++) {
+                if (Game.overlapAtOffset(object1.children[i], object2, offsetX, offsetY))
+                    return true;
+            }
+        } else if (object2.physicsType == Phaser.GROUP) {
+            for (var i = 0; i < object2.children.length; i++) {
+                if (Game.overlapAtOffset(object1, object2.children[i], offsetX, offsetY))
+                    return true;
+            }
+        } else {
+            return Game.overlapAtOffsetSprite(object1, object2, offsetX, offsetY);
+        }
+        return false;
     },
 
     render: function () {
