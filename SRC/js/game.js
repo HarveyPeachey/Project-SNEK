@@ -8,7 +8,8 @@ var snake,
     direction,
     cursors,
     newDirection,
-    newGridSquare,
+    newYGridPos,
+    newXGridPos,
     upButton,
     downButton,
     leftButton,
@@ -106,7 +107,7 @@ var Game = {
     update: function () {
         updateDelay++;
         // Rotates snake head in correct direction also stops illegal moves
-        if (cursors.right.isDown && direction!='left') {
+        if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && direction!='left') {
             newDirection = 'right';
             snake[0].angle = 90;
             // if cursors.right.duration < 1{
@@ -116,47 +117,49 @@ var Game = {
             // }
             // *PUT IN FUNCTION
             if (direction == 'up') {
-                newGridSquare =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
+                newYGridPos =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
             }
             else if (direction == 'down') {
-                newGridSquare =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
+                newYGridPos =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
             }
         }// Make the player collide with the bounds of the world// Make the player collide with the bounds of the world
-        else if (cursors.left.isDown && direction!='right') {
+        else if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) && direction!='right') {
             newDirection = 'left';
             snake[0].angle = -90;
             if (direction == 'up') {
-                newGridSquare =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
+                newYGridPos =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
             }
             else if (direction == 'down') {
-                newGridSquare =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
+                newYGridPos =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
             }
         }
-        else if (cursors.up.isDown && direction!='down') {
+        else if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) && direction!='down') {
             newDirection = 'up';
             snake[0].angle = 0;
             if (direction == 'left') {
-                newGridSquare =  snake[0].x - ((snake[0].x + snake[0].height*0.5)% squareSize);
+                newXGridPos =  snake[0].x - ((snake[0].x + snake[0].height*0.5)% squareSize);
             }
             else if (direction == 'right') {
-                newGridSquare =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
+                newXGridPos =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
             }
 
         }
-        else if (cursors.down.isDown && direction!='up') {
+        else if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) && direction!='up') {
             newDirection = 'down';
             snake[0].angle = 180;
             if (direction == 'left') {
-                newGridSquare =  (snake[0].x - ((snake[0].x + snake[0].height*0.5) % squareSize));
+                newXGridPos =  (snake[0].x - ((snake[0].x + snake[0].height*0.5) % squareSize));
             }
             else if (direction == 'right') {
-                newGridSquare =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
+                newXGridPos =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
             }
         }
 
         // Checks if the snake heads x and y coordinates have hit the new calculated grid square and changes the direction
-        if (snake[0].y == newGridSquare || snake[0].x == newGridSquare) {
+        if (snake[0].y == newYGridPos || snake[0].x == newXGridPos) {
             direction = newDirection;
+            newYGridPos = -1;
+            newXGridPos = -1;
         }
 
         // Changes direction in which snake segments move
@@ -180,7 +183,6 @@ var Game = {
                 snake[i].y += speed;
             }
         }
-
 
         // Movement of pellet
         // Move the player up and down based on keyboard arrows
@@ -268,9 +270,13 @@ var Game = {
 
     },
 
+    reset: function() {
+
+    },
+
     render: function() {
         game.debug.spriteInfo(snake[0], 32, 32);
-        game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newGridSquare} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
+        game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newXGridPos} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
         game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
     }
 }
