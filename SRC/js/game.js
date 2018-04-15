@@ -204,9 +204,12 @@ var Game = {
         else {
             food.body.velocity.x = 0;
         }
-        if (Game.overlapAtOffset(food, sGroup, 16, -10))
-            alert("testing border hit");
-            //game.state.start('GameOver');
+
+        if (Game.overlapAtOffset(food, sGroup, 16, -10)){
+            p1Win = true;
+            game.state.start('GameOver');
+        }
+        Game.wallCollision(snake[0]);
     },
         
     //checks whether two sprites overlap up to a certain offset 
@@ -250,7 +253,19 @@ var Game = {
         return false;
     },
 
-    render: function () {
+    wallCollision: function(head) {
+
+    // Check if the head of the snake is in the boundaries of the game field.
+
+        if(head.x >= 800 || head.x < 0 || head.y >= 600 || head.y < 0){
+
+            // If it's not in, we've hit a wall. Go to game over screen.
+            game.state.start('GameOver');
+        }
+
+    },
+
+    render: function() {
         game.debug.spriteInfo(snake[0], 32, 32);
         game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newGridSquare} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
         game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
