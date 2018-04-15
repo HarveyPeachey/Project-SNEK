@@ -106,6 +106,7 @@ var Game = {
 
     update: function () {
         updateDelay++;
+        levelTime = this.game.time.elapsedSecondsSince(startTime).toFixed(3);
         // Rotates snake head in correct direction also stops illegal moves
         if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && direction!='left') {
             newDirection = 'right';
