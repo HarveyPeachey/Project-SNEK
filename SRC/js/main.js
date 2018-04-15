@@ -1,6 +1,6 @@
-var game, p1Win;
+var game, p1Win, direction;
 
-game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example');
+game = new Phaser.Game(600, 450, Phaser.AUTO, 'phaser-example');
 
 game.state.add('Menu', Menu);
 
