@@ -44,7 +44,7 @@ var Game = {
         squareSize = 30;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
         direction = 'up';       // Chooses the initial direction of the snake
-        speed = 2;
+        speed = 3;
         fSpeed = 175;
         updateDelay = 0;
         gameTimer = 0;
@@ -103,9 +103,6 @@ var Game = {
 
     update: function () {
         updateDelay++;
-        if (updateDelay % 60 == 0) {
-            gameTimer = gameTimer + 1;
-        }
         // Rotates snake head in correct direction also stops illegal moves
         if (cursors.right.isDown && direction!='left') {
             newDirection = 'right';
@@ -117,30 +114,30 @@ var Game = {
             // }
             // *PUT IN FUNCTION
             if (direction == 'up') {
-                newGridSquare =  (snake[0].y - (snake[0].y % squareSize))+snake[0].width*0.5;
+                newGridSquare =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
             }
             else if (direction == 'down') {
-                newGridSquare =  (snake[0].y + (squareSize - (snake[0].y % squareSize)))+snake[0].width*0.5;
+                newGridSquare =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
             }
         }// Make the player collide with the bounds of the world// Make the player collide with the bounds of the world
         else if (cursors.left.isDown && direction!='right') {
             newDirection = 'left';
             snake[0].angle = -90;
             if (direction == 'up') {
-                newGridSquare =  (snake[0].y - (snake[0].y % squareSize))+snake[0].width*0.5;
+                newGridSquare =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
             }
             else if (direction == 'down') {
-                newGridSquare =  (snake[0].y + (squareSize - (snake[0].y % squareSize)))+snake[0].width*0.5;
+                newGridSquare =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
             }
         }
         else if (cursors.up.isDown && direction!='down') {
             newDirection = 'up';
             snake[0].angle = 0;
             if (direction == 'left') {
-                newGridSquare =  (snake[0].x - (snake[0].x % squareSize))+snake[0].height*0.5;
+                newGridSquare =  snake[0].x - ((snake[0].x + snake[0].height*0.5)% squareSize);
             }
             else if (direction == 'right') {
-                newGridSquare =  (snake[0].x + (squareSize - (snake[0].x % squareSize)))+snake[0].height*0.5;
+                newGridSquare =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
             }
 
         }
@@ -148,10 +145,10 @@ var Game = {
             newDirection = 'down';
             snake[0].angle = 180;
             if (direction == 'left') {
-                newGridSquare =  (snake[0].x - (snake[0].x % squareSize))+snake[0].height*0.5;
+                newGridSquare =  (snake[0].x - ((snake[0].x + snake[0].height*0.5) % squareSize));
             }
             else if (direction == 'right') {
-                newGridSquare =  (snake[0].x + (squareSize - (snake[0].x % squareSize)))+snake[0].height*0.5;
+                newGridSquare =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
             }
         }
 
@@ -181,6 +178,7 @@ var Game = {
                 snake[i].y += speed;
             }
         }
+
 
         // Movement of pellet
         // Move the player up and down based on keyboard arrows
