@@ -23,7 +23,7 @@ var Game = {
     preload: function () {
         // Here we load all the needed resources for the level.
         // In our case, that's just two squares - one for the snake body and one for the apple.
-        game.load.image('background', './assets/images/background.jpg');
+        game.load.image('background', './assets/images/grid.jpg');
         game.load.image('food', './assets/sprites/pellet-30px.png');
         game.load.image('shead', './assets/sprites/shead-30px.png');
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
