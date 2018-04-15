@@ -1,4 +1,4 @@
-var game, p1Win, direction;
+var game, p1Win;
 
 game = new Phaser.Game(600, 450, Phaser.AUTO, 'phaser-example');
 

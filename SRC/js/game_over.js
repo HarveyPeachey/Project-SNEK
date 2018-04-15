@@ -21,7 +21,6 @@ var GameOver = {
     startGame: function () {
 
         // Change the state back to Game.
-        direction = 'up';
         this.state.start('Game');
     }
 }

@@ -49,6 +49,7 @@ var Game = {
         updateDelay = 0;
         gameTimer = 0;
 
+
         // Set up a Phaser controller for keyboard input.
         cursors = game.input.keyboard.createCursorKeys();
         upButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -207,6 +208,7 @@ var Game = {
 
         if (Game.overlapAtOffset(food, sGroup, 16, -10)){
             p1Win = true;
+            newDirection = 'up';
             game.state.start('GameOver');
         }
         Game.wallCollision(snake[0]);
@@ -260,6 +262,7 @@ var Game = {
         if(head.x >= 600 || head.x < 0 || head.y >= 450 || head.y < 0){
 
             // If it's not in, we've hit a wall. Go to game over screen.
+            newDirection = 'up';
             game.state.start('GameOver');
         }
 
