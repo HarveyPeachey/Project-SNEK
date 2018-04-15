@@ -50,6 +50,7 @@ var Game = {
         gameTimer = 0;
 
 
+
         // Set up a Phaser controller for keyboard input.
         cursors = game.input.keyboard.createCursorKeys();
         upButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -263,6 +264,7 @@ var Game = {
 
             // If it's not in, we've hit a wall. Go to game over screen.
             newDirection = 'up';
+            p1Win = false;
             game.state.start('GameOver');
         }
 
