@@ -25,7 +25,7 @@ var Game = {
     preload: function () {
         // Here we load all the needed resources for the level.
         // In our case, that's just two squares - one for the snake body and one for the apple.
-        game.load.image('background', './assets/images/grid.jpg');
+        game.load.image('background', './assets/images/backgroundgrid.png');
         game.load.image('food', './assets/sprites/pellet-30px.png');
         game.load.image('shead', './assets/sprites/shead-30px.png');
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
@@ -104,14 +104,12 @@ var Game = {
         console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
-
-
-
     },
 
     update: function () {
         updateDelay++;
         levelTime = this.game.time.elapsedSecondsSince(startTime).toFixed(3);
+
         // Rotates snake head in correct direction also stops illegal moves
         if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && direction!='left') {
             newDirection = 'right';
@@ -226,7 +224,6 @@ var Game = {
 
         }
         Game.wallCollision(snake[0][0]);
-        game.add.text(350, 20, this.game.time.elapsedSecondsSince(startTime).toFixed(3), { font: '24px Arial', fill: '#0ff' });
     },
         
     //checks whether two sprites overlap up to a certain offset 
@@ -271,7 +268,7 @@ var Game = {
 
         // Check if the head of the snake is in the boundaries of the game field.
 
-        if(head.x >= 600 || head.x < 0 || head.y >= 450 || head.y < 0){
+        if(head.x >= 600 || head.x < 0 || head.y >= 450 || head.y < 70){
 
             // If it's not in, we've hit a wall. Go to game over screen.
             newDirection = 'up';
@@ -280,9 +277,6 @@ var Game = {
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
-          
-
-      
         }
 
     },
@@ -292,9 +286,13 @@ var Game = {
     },
 
     render: function() {
-        game.debug.spriteInfo(snake[0][0], 32, 32);
-        game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newXGridPos} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
-        game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
+        // game.debug.spriteInfo(snake[0][0], 32, 32);
+        // game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newXGridPos} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
+        // game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
+        //game..text(350, 20, this.game.time.elapsedSecondsSince(startTime).toFixed(3), { font: '24px Arial', fill: '#000' });
+        var graphics = game.add.graphics(0,0)
+        graphics.beginFill(0x00a651, 1);
+        graphics.drawRect(0,0,600,60)
     }
 }
 
