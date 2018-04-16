@@ -20,7 +20,7 @@ var GameOver = {
         		this.add.button(0, 0, 'gameOver2', this.startGame, this);
         		game.add.text(200, 250, "Time survived: "+levelTime.toString(), { font: '24px Arial', fill: '#080' });
         	}
-
+        	game.add.text(200, 250, "Click anywhere to play again"+levelTime.toString(), { font: '24px Arial', fill: '#080' });	
     },
 
     startGame: function () {
