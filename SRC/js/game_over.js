@@ -22,7 +22,7 @@ var GameOver = {
 				game.add.text(200, 250, "Time Taken: "+levelTime.toString(), { font: '24px Arial', fill: '#080' });
 				game.add.text(200, 275, "Score: "+p2score, { font: '24px Arial', fill: '#080' });
         	}
-        	game.add.text(200, 250, "Click anywhere to play again"+levelTime.toString(), { font: '24px Arial', fill: '#080' });	
+        	game.add.text(160, 330, "Click anywhere to play again", { font: '24px Arial', fill: '#080' });	
     },
 
     startGame: function () {
