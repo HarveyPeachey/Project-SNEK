@@ -219,6 +219,7 @@ var Game = {
             p1Win = true;
             newDirection = 'up';
             alert("hit");
+          p1score +=3;
             game.state.start('GameOver');
             lossSound = game.add.audio('lSound');
             lossSound.play(); // Plays the loss sound on overlap
@@ -275,6 +276,7 @@ var Game = {
             // If it's not in, we've hit a wall. Go to game over screen.
             newDirection = 'up';
             p1Win = false;
+             p2score +=3;
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
