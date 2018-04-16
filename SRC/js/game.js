@@ -222,7 +222,7 @@ var Game = {
             lossSound.play(); // Plays the loss sound on overlap
 
         }
-        Game.wallCollision(snake[0]);
+        Game.wallCollision(snake[0][0]);
     },
 
     //checks whether two sprites overlap up to a certain offset
