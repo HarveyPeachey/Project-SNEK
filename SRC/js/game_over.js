@@ -11,11 +11,15 @@ var GameOver = {
     create : function() {
 
         // Create button to start game like in Menu.
-        	if (p1Win == true)
+        	if (p1Win == true) {
         		this.add.button(0, 0, 'gameOver', this.startGame, this);
+        		game.add.text(200, 250, "Time taken: "+levelTime.toString(), { font: '24px Arial', fill: '#080' });
+        	}
         	else
+        	{
         		this.add.button(0, 0, 'gameOver2', this.startGame, this);
-        	game.add.text(300, 225, levelTime, { font: '24px Arial', fill: '#080' });
+        		game.add.text(200, 250, "Time survived: "+levelTime.toString(), { font: '24px Arial', fill: '#080' });
+        	}
 
     },
 
