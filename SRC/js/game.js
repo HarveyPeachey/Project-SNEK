@@ -16,7 +16,8 @@ var snake,
     rightButton,
     updateDelay,
     gameTimer,
-    startTime;
+    startTime,
+    lossSound;
 
 
 var Game = {
@@ -30,7 +31,7 @@ var Game = {
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
         game.load.image('stail', './assets/sprites/stail-30px.png');
         game.load.image('scorner', './assets/sprites/scorner-50px.png');
-
+        game.load.audio('lSound', './assets/music/lose.wav');
     },
 
     init: function() {
@@ -38,6 +39,8 @@ var Game = {
     },
 
     create: function () {
+       // music = game.add.audio('bg-music');
+       // music.play();
         game.physics.startSystem(Phaser.Physics.ARCADE);
         snake = [];             // This is a stack to store the snake parts
         snakeSize = 5;          // This is the size of the body of the snake
@@ -214,6 +217,9 @@ var Game = {
             p1Win = true;
             newDirection = 'up';
             game.state.start('GameOver');
+            lossSound = game.add.audio('lSound');
+            lossSound.play(); // Plays the loss sound on overlap
+
         }
         Game.wallCollision(snake[0]);
     },
@@ -268,7 +274,12 @@ var Game = {
             // If it's not in, we've hit a wall. Go to game over screen.
             newDirection = 'up';
             p1Win = false;
+            lossSound = game.add.audio('lSound');
+            lossSound.play();
             game.state.start('GameOver');
+          
+
+      
         }
 
     },
