@@ -7,7 +7,6 @@
     fSpeed,
     direction,
     cursors,
-    newDirection,
     upButton,
     downButton,
     leftButton,
@@ -15,7 +14,7 @@
     updateDelay,
     gameTimer,
     buffer,
-    startTime
+    startTime,
     lossSound;
 
 
@@ -24,12 +23,12 @@ var Game = {
     preload: function () {
         // Here we load all the needed resources for the level.
         // In our case, that's just two squares - one for the snake body and one for the apple.
-        game.load.image('background', './assets/images/backgroundgrid.png');
+        game.load.image('background', './assets/images/backgroundgrid.jpg');
         game.load.image('food', './assets/sprites/pellet-30px.png');
         game.load.image('shead', './assets/sprites/shead-30px.png');
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
         game.load.image('stail', './assets/sprites/stail-30px.png');
-        game.load.image('scorner', './assets/sprites/scorner-50px.png');
+        //game.load.image('scorner', './assets/sprites/scorner-50px.png');
         game.load.audio('lSound', './assets/music/lose.wav');
 
     },
@@ -39,6 +38,8 @@ var Game = {
     },
 
     create: function () {
+        //music = game.add.audio('bg-music');
+        //music.play();
         game.physics.startSystem(Phaser.Physics.ARCADE);
         snakeSize = 10;          // This is the size of the body of the snake
         food = {};              // Object for the food piece
@@ -101,13 +102,16 @@ var Game = {
             // This adds each snake to the group for use with collision detection
             sGroup.add(snake[i][0]);
         }
-        console.log(snake[0][0]);
+        //console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
+        var graphics = game.add.graphics(0,0)
+        graphics.beginFill(0x00a651, 1);
+        graphics.drawRect(0,0,600,60)
     },
 
     update: function () {
-        updateDelay++;
+        //updateDelay++;
         levelTime = this.game.time.elapsedSecondsSince(startTime).toFixed(3);
         /*  --------------------------------------------SNAKE INPUT-------------------------------------------- */
 
@@ -216,9 +220,11 @@ var Game = {
             food.body.velocity.x = 0;
         }
 
-        if (Game.overlapAtOffset(food, sGroup, 16, -10)){
+        if (Game.overlapAtOffset(food, sGroup, 0, 0)){
             p1Win = true;
-            newDirection = 'up';
+            p1score += 3;
+            lossSound = game.add.audio('lSound');
+            lossSound.play();
             game.state.start('GameOver');
         }
         Game.wallCollision(snake[0][0]);
@@ -226,23 +232,25 @@ var Game = {
     /*  --------------------------------------------COLLISION BETWEEN SPRITE BODIES-------------------------------------------- */
 
     //checks whether two sprites overlap up to a certain offset
-    overlapAtOffsetSprite: function(object1, object2, offsetX, offsetY) {
+       overlapAtOffsetSprite: function(object1, object2, offsetX, offsetY) {
+        //var graphics = game.add.graphics(0, 0);
         //if either of the parameters passed aren't sprites
         if (typeof(object1.body) === "undefined" || typeof(object2.body) === "undefined") {
             return false;
         }
         //creates a new sprite shape from which the overlap will be greater dpeending on the offsets set by the user
-        var bounds1 = new Phaser.Rectangle(object1.position.x + object1.body.offset.x -
-            object1.anchor.x * object1.width / object1.scale.x +
-            offsetX, object1.position.y + object1.body.offset.y -
-            object1.anchor.y * object1.height / object1.scale.y +
-            offsetY, object1.body.width, object1.body.height);
+        var bounds1 = new Phaser.Rectangle((object1.position.x + object1.body.offset.x - 0.2 * object1.width / object1.scale.x + offsetX),(object1.position.y + object1.body.offset.y - 0 * object1.height / object1.scale.y + offsetY),(object1.body.width*0.4), (object1.body.height*0.4));
+        //graphics.lineStyle(10, 0xFF0000, 0.8);
+        //graphics.beginFill(0xFF700B, 1);
+        //graphics.drawRect((object1.position.x + object1.body.offset.x - 0.2 * object1.width / object1.scale.x + offsetX),(object1.position.y + object1.body.offset.y - 0 * object1.height / object1.scale.y + offsetY),(object1.body.width*0.4), (object1.body.height*0.4));
+        //graphics.drawRect((object2.position.x + object2.body.offset.x - 0.2 * object2.width / object2.scale.x),(object2.position.y + object2.body.offset.y - 0 * object2.height / object2.scale.y),(object2.body.width*0.6), (object2.body.height*0.6));
         //once again a larger shape is created
         var bounds2 = new Phaser.Rectangle(object2.position.x + object2.body.offset.x -
-            object2.anchor.x * object2.width / object2.scale.x,
+            0.2 * object2.width / object2.scale.x,
             object2.position.y + object2.body.offset.y -
-            object2.anchor.y * object2.height / object1.scale.y,
-            object2.body.width, object2.body.height);
+            0 * object2.height / object1.scale.y,
+            object2.body.width*0.6, object2.body.height*0.6);
+        //game.draw
         return Phaser.Rectangle.intersects(bounds1, bounds2);
     },
     //this function is used when either of the sprites needed to be checked are a group of sprites
@@ -275,6 +283,9 @@ var Game = {
             // If it's not in, we've hit a wall. Go to game over screen.
             snake[0][2] = 'up';
             p1Win = false;
+            p2score += 3;
+            lossSound = game.add.audio('lSound');
+            lossSound.play();
             game.state.start('GameOver');
         }
 
@@ -289,9 +300,6 @@ var Game = {
         // game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newXGridPos} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
         // game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
         //game..text(350, 20, this.game.time.elapsedSecondsSince(startTime).toFixed(3), { font: '24px Arial', fill: '#000' });
-        var graphics = game.add.graphics(0,0)
-        graphics.beginFill(0x00a651, 1);
-        graphics.drawRect(0,0,600,60)
     }
 }
 
