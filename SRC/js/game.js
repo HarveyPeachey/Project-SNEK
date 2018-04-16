@@ -1,4 +1,4 @@
-var snake = new Array(snakeSize),
+    var snake = new Array(),
     snakeSize,
     food,
     squareSize,
@@ -8,14 +8,13 @@ var snake = new Array(snakeSize),
     direction,
     cursors,
     newDirection,
-    newYGridPos,
-    newXGridPos,
     upButton,
     downButton,
     leftButton,
     rightButton,
     updateDelay,
     gameTimer,
+    buffer,
     startTime;
 
 
@@ -115,6 +114,7 @@ var Game = {
 
         // Rotates snake head in correct direction also stops illegal moves
         if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && snake[0][1]!='left') {
+            buffer = snake[0][1];
             snake[0][2] = 'right';
             snake[0][0].angle = 90;
             if (snake[0][1] == 'up') {
@@ -125,6 +125,7 @@ var Game = {
             }
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) && snake[0][1]!='right') {
+            buffer = snake[0][1];
             snake[0][2] = 'left';
             snake[0][0].angle = -90;
             if (snake[0][1] == 'up') {
@@ -135,6 +136,7 @@ var Game = {
             }
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) && snake[0][1]!='down') {
+            buffer = snake[0][1];
             snake[0][2] = 'up';
             snake[0][0].angle = 0;
             if (snake[0][1] == 'left') {
@@ -146,6 +148,7 @@ var Game = {
 
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) && snake[0][1]!='up') {
+            buffer = snake[0][1];
             snake[0][2] = 'down';
             snake[0][0].angle = 180;
             if (snake[0][1] == 'left') {
@@ -162,7 +165,6 @@ var Game = {
 
         for (var i = 0; i < snake.length; i++) {
             if (snake[i][0].y == snake[i][3] || snake[i][0].x == snake[i][4]) {
-
                 snake[i][1] = snake[i][2];
                 if (i < snake.length-1) {
                     snake[i+1][2] = snake[i][2];
@@ -174,7 +176,7 @@ var Game = {
             }
 
         }
-        // if (updateDelay % 1 == 0) {
+        // if (updateDelay % 10 == 0) {
             // Changes direction in which snake segments move
             for (var i = 0; i < snake.length; i++) {
                 if (snake[i][1] == 'right') {
@@ -272,7 +274,7 @@ var Game = {
         if(head.x >= 600 || head.x < 0 || head.y >= 450 || head.y < 0){
 
             // If it's not in, we've hit a wall. Go to game over screen.
-            newDirection = 'up';
+            snake[0][2] = 'up';
             p1Win = false;
             game.state.start('GameOver');
         }
@@ -285,7 +287,7 @@ var Game = {
 
     render: function() {
         game.debug.spriteInfo(snake[0][0], 32, 32);
-        game.debug.text(`Head ${snake[0][1]} Direction: ${snake[1][1]}  NewDirection:${snake[1][2]} `, 20, 20, 'yellow', 'Segoe UI');
+        game.debug.text(`Head ${snake[0][1]} Direction: ${snake[1][1]}  NewDirection:${snake[1][2]} Buffer:${buffer} `, 20, 20, 'yellow', 'Segoe UI');
         game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
     }
 }
