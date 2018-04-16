@@ -161,26 +161,28 @@ var Game = {
             newYGridPos = -1;
             newXGridPos = -1;
         }
+        if (updateDelay % 10 == 0) {
+            // Changes direction in which snake segments move
+            if (direction == 'right') {
+                for (var i = 0; i < snake.length; i++) {
+                    snake[i].x += speed;
+                }
+            }
+            else if (direction == 'left') {
+                for (var i = 0; i < snake.length; i++) {
+                    snake[i].x += speed-(speed*2);
+                }
+            }
+            else if (direction == 'up') {
+                for (var i = 0; i < snake.length; i++) {
+                    snake[i].y += speed-(speed*2);
+                }
 
-        // Changes direction in which snake segments move
-        if (direction == 'right') {
-            for (var i = 0; i < snake.length; i++) {
-                snake[i].x += speed;
             }
-        }
-        else if (direction == 'left') {
-            for (var i = 0; i < snake.length; i++) {
-                snake[i].x += speed-(speed*2);
-            }
-        }
-        else if (direction == 'up') {
-            for (var i = 0; i < snake.length; i++) {
-                snake[i].y += speed-(speed*2);
-            }
-        }
-        else if (direction == 'down') {
-            for (var i = 0; i < snake.length; i++) {
-                snake[i].y += speed;
+            else if (direction == 'down') {
+                for (var i = 0; i < snake.length; i++) {
+                    snake[i].y += speed;
+                }
             }
         }
 
