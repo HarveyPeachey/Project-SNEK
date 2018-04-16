@@ -1,4 +1,4 @@
-var game, p1Win, timeTaken;
+var game, p1Win, levelTime;
 
 game = new Phaser.Game(600, 450, Phaser.AUTO, 'phaser-example');
 

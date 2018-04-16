@@ -15,11 +15,11 @@ var GameOver = {
         		this.add.button(0, 0, 'gameOver', this.startGame, this);
         	else
         		this.add.button(0, 0, 'gameOver2', this.startGame, this);
+        	game.add.text(300, 225, levelTime, { font: '24px Arial', fill: '#080' });
 
     },
 
     startGame: function () {
-
         // Change the state back to Game.
         this.state.start('Game');
     }
