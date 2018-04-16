@@ -1,4 +1,4 @@
-var snake,
+var snake = new Array(snakeSize),
     snakeSize,
     food,
     squareSize,
@@ -39,7 +39,6 @@ var Game = {
 
     create: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        snake = [];             // This is a stack to store the snake parts
         snakeSize = 5;          // This is the size of the body of the snake
         food = {};              // Object for the food piece
         squareSize = 30;        // Size of the grid in pixels should be same as image size of snake sprites
@@ -49,8 +48,9 @@ var Game = {
         fSpeed = 175;
         updateDelay = 0;
         gameTimer = 0;
-
-
+        for (var i = 0; i < snakeSize; i++) {
+            snake[i] = [];
+        }
 
         // Set up a Phaser controller for keyboard input.
         cursors = game.input.keyboard.createCursorKeys();
@@ -72,36 +72,37 @@ var Game = {
         // Loops through and creates the initial snake based on snakeSize that is set
         for(var i = 0; i < snakeSize; i++) {
             if (i == 0) {
-                snake[i] = game.add.sprite(0, 300, 'shead');
-                snake[i].anchor.setTo(0.5);
-                snake[i].x += snake[i].width*0.5;
-                snake[i].y += snake[i].height*0.5;
-                sGroup.add(snake[i]);   // ????
+                snake[i][0] = game.add.sprite(0, 300, 'shead');
+                snake[i][0].anchor.setTo(0.5);
+                snake[i][0].x += snake[i][0].width*0.5;
+                snake[i][0].y += snake[i][0].height*0.5;
+                sGroup.add(snake[i][0]);   // ????
                 continue;
 
             }
             else if (i == snakeSize-1) {
-                snake[i] = game.add.sprite(0, 300 + i * squareSize, 'stail');
-                snake[i].anchor.setTo(0.5);
-                snake[i].x += snake[i].width*0.5;
-                snake[i].y += snake[i].height*0.5;
-                sGroup.add(snake[i]); // ?????
+                snake[i][0] = game.add.sprite(0, 300 + i * squareSize, 'stail');
+                snake[i][0].anchor.setTo(0.5);
+                snake[i][0].x += snake[i][0].width*0.5;
+                snake[i][0].y += snake[i][0].height*0.5;
+                sGroup.add(snake[i][0]); // ?????
                 break;
             }
             else {
-                snake[i] = game.add.sprite(0, 300 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
-                snake[i].anchor.setTo(0.5);
-                snake[i].x += snake[i].width * 0.5;
-                snake[i].y += snake[i].height * 0.5;
+                snake[i][0] = game.add.sprite(0, 300 + i * squareSize, 'sbody');  // Parameters are (X coordinate, Y coordinate, image)
+                snake[i][0].anchor.setTo(0.5);
+                snake[i][0].x += snake[i][0].width * 0.5;
+                snake[i][0].y += snake[i][0].height * 0.5;
             }
-        // This adds each snake to the group for use with collision detection
-        sGroup.add(snake[i]);
+            // This adds each snake to the group for use with collision detection
+            sGroup.add(snake[i][0]);
         }
+        console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
-        
 
-        
+
+
     },
 
     update: function () {
@@ -110,7 +111,7 @@ var Game = {
         // Rotates snake head in correct direction also stops illegal moves
         if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && direction!='left') {
             newDirection = 'right';
-            snake[0].angle = 90;
+            snake[0][0].angle = 90;
             // if cursors.right.duration < 1{
             //     for (var i = 1; i< 5; i++){
             //             game.add.sprite(snake[0].position.x, snake[0].position.y, 'scorner');
@@ -118,46 +119,46 @@ var Game = {
             // }
             // *PUT IN FUNCTION
             if (direction == 'up') {
-                newYGridPos =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
+                newYGridPos =  snake[0][0].y - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize);
             }
             else if (direction == 'down') {
-                newYGridPos =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
+                newYGridPos =  snake[0][0].y + (squareSize - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize));
             }
         }// Make the player collide with the bounds of the world// Make the player collide with the bounds of the world
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) && direction!='right') {
             newDirection = 'left';
-            snake[0].angle = -90;
+            snake[0][0].angle = -90;
             if (direction == 'up') {
-                newYGridPos =  snake[0].y - ((snake[0].y + snake[0].width*0.5) % squareSize);
+                newYGridPos =  snake[0][0].y - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize);
             }
             else if (direction == 'down') {
-                newYGridPos =  snake[0].y + (squareSize - ((snake[0].y + snake[0].width*0.5) % squareSize));
+                newYGridPos =  snake[0][0].y + (squareSize - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize));
             }
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) && direction!='down') {
             newDirection = 'up';
-            snake[0].angle = 0;
+            snake[0][0].angle = 0;
             if (direction == 'left') {
-                newXGridPos =  snake[0].x - ((snake[0].x + snake[0].height*0.5)% squareSize);
+                newXGridPos =  snake[0][0].x - ((snake[0][0].x + snake[0][0].height*0.5)% squareSize);
             }
             else if (direction == 'right') {
-                newXGridPos =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
+                newXGridPos =  snake[0][0].x + (squareSize - ((snake[0][0].x + snake[0][0].height*0.5) % squareSize));
             }
 
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) && direction!='up') {
             newDirection = 'down';
-            snake[0].angle = 180;
+            snake[0][0].angle = 180;
             if (direction == 'left') {
-                newXGridPos =  (snake[0].x - ((snake[0].x + snake[0].height*0.5) % squareSize));
+                newXGridPos =  (snake[0][0].x - ((snake[0][0].x + snake[0][0].height*0.5) % squareSize));
             }
             else if (direction == 'right') {
-                newXGridPos =  snake[0].x + (squareSize - ((snake[0].x + snake[0].height*0.5) % squareSize));
+                newXGridPos =  snake[0][0].x + (squareSize - ((snake[0][0].x + snake[0][0].height*0.5) % squareSize));
             }
         }
 
         // Checks if the snake heads x and y coordinates have hit the new calculated grid square and changes the direction
-        if (snake[0].y == newYGridPos || snake[0].x == newXGridPos) {
+        if (snake[0][0].y == newYGridPos || snake[0][0].x == newXGridPos) {
             direction = newDirection;
             newYGridPos = -1;
             newXGridPos = -1;
@@ -166,23 +167,23 @@ var Game = {
             // Changes direction in which snake segments move
             if (direction == 'right') {
                 for (var i = 0; i < snake.length; i++) {
-                    snake[i].x += speed;
+                    snake[i][0].x += speed;
                 }
             }
             else if (direction == 'left') {
                 for (var i = 0; i < snake.length; i++) {
-                    snake[i].x += speed-(speed*2);
+                    snake[i][0].x += speed-(speed*2);
                 }
             }
             else if (direction == 'up') {
                 for (var i = 0; i < snake.length; i++) {
-                    snake[i].y += speed-(speed*2);
+                    snake[i][0].y += speed-(speed*2);
                 }
 
             }
             else if (direction == 'down') {
                 for (var i = 0; i < snake.length; i++) {
-                    snake[i].y += speed;
+                    snake[i][0].y += speed;
                 }
             }
         }
@@ -217,8 +218,8 @@ var Game = {
         }
         Game.wallCollision(snake[0]);
     },
-        
-    //checks whether two sprites overlap up to a certain offset 
+
+    //checks whether two sprites overlap up to a certain offset
     overlapAtOffsetSprite: function(object1, object2, offsetX, offsetY) {
         //if either of the parameters passed aren't sprites
         if (typeof(object1.body) === "undefined" || typeof(object2.body) === "undefined") {
@@ -246,13 +247,13 @@ var Game = {
                 if (Game.overlapAtOffset(object1.children[i], object2, offsetX, offsetY))
                     return true;
             }
-        //if the second parameter is a group, then loop
+            //if the second parameter is a group, then loop
         } else if (object2.physicsType == Phaser.GROUP) {
             for (var i = 0; i < object2.children.length; i++) {
                 if (Game.overlapAtOffset(object1, object2.children[i], offsetX, offsetY))
                     return true;
             }
-        //otherwise it is singular
+            //otherwise it is singular
         } else {
             return Game.overlapAtOffsetSprite(object1, object2, offsetX, offsetY);
         }
@@ -261,7 +262,7 @@ var Game = {
 
     wallCollision: function(head) {
 
-    // Check if the head of the snake is in the boundaries of the game field.
+        // Check if the head of the snake is in the boundaries of the game field.
 
         if(head.x >= 600 || head.x < 0 || head.y >= 450 || head.y < 0){
 
@@ -278,7 +279,7 @@ var Game = {
     },
 
     render: function() {
-        game.debug.spriteInfo(snake[0], 32, 32);
+        game.debug.spriteInfo(snake[0][0], 32, 32);
         game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newXGridPos} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
         game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
     }
