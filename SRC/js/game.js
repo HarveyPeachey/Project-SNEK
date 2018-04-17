@@ -23,13 +23,14 @@ var Game = {
     preload: function () {
         // Here we load all the needed resources for the level.
         // In our case, that's just two squares - one for the snake body and one for the apple.
+        game.load.image('banner', './assets/images/banner.jpg');
         game.load.image('background', './assets/images/backgroundgrid.jpg');
         game.load.image('food', './assets/sprites/pellet-30px.png');
         game.load.image('shead', './assets/sprites/shead-30px.png');
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
         game.load.image('stail', './assets/sprites/stail-30px.png');
         //game.load.image('scorner', './assets/sprites/scorner-50px.png');
-        game.load.audio('lSound', './assets/music/lose.wav');
+        game.load.audio('lSound', './assets/images/banner.jpg');
 
     },
 
@@ -69,6 +70,9 @@ var Game = {
         game.physics.enable(food, Phaser.Physics.ARCADE);
         // Make the player collide with the bounds of the world
         food.body.collideWorldBounds = true;
+        banner = game.add.sprite(0, 0, 'banner');
+        game.physics.enable(banner, Phaser.Physics.ARCADE);
+        banner.body.immovable = true;
         // Creates a group for the snake sprites so that collision detection can work for each piece of the snake
         sGroup = game.add.group();
         // Loops through and creates the initial snake based on snakeSize that is set
@@ -105,12 +109,10 @@ var Game = {
         //console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
-        var graphics = game.add.graphics(0,0)
-        graphics.beginFill(0x00a651, 1);
-        graphics.drawRect(0,0,600,60)
     },
 
     update: function () {
+        game.physics.arcade.collide(food, banner);
         //updateDelay++;
         levelTime = this.game.time.elapsedSecondsSince(startTime).toFixed(3);
         /*  --------------------------------------------SNAKE INPUT-------------------------------------------- */
