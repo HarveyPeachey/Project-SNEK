@@ -15,7 +15,8 @@
     gameTimer,
     buffer,
     startTime,
-    lossSound;
+    lossSound,
+    snakeCorners;
 
 
 var Game = {
@@ -29,7 +30,7 @@ var Game = {
         game.load.image('shead', './assets/sprites/shead-30px.png');
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
         game.load.image('stail', './assets/sprites/stail-30px.png');
-        //game.load.image('scorner', './assets/sprites/scorner-50px.png');
+        game.load.image('scorner', './assets/sprites/scorner-30px.png');
         game.load.audio('lSound', './assets/music/lose.wav');
 
     },
@@ -41,6 +42,7 @@ var Game = {
     create: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         snakeSize = 10;          // This is the size of the body of the snake
+        snakeCorners = [];
         food = {};              // Object for the food piece
         squareSize = 30;        // Size of the grid in pixels should be same as image size of snake sprites
         score = 0;              // Stores the score of the player
@@ -143,7 +145,7 @@ var Game = {
         /*  --------------------------------------------SNAKE INPUT-------------------------------------------- */
 
         // Rotates snake head in correct direction also stops illegal moves
-        if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && snake[0][1]!='left') {
+        if (game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT) && snake[0][1]!='left' && snake[0][1]!='right') {
             buffer = snake[0][1];
             snake[0][2] = 'right';
             snake[0][0].angle = 90;
@@ -154,7 +156,7 @@ var Game = {
                 snake[0][3] =  snake[0][0].y + (squareSize - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize));
             }
         }
-        else if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) && snake[0][1]!='right') {
+        else if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) && snake[0][1]!='right' && snake[0][1]!='left') {
             buffer = snake[0][1];
             snake[0][2] = 'left';
             snake[0][0].angle = -90;
@@ -165,7 +167,7 @@ var Game = {
                 snake[0][3] =  snake[0][0].y + (squareSize - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize));
             }
         }
-        else if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) && snake[0][1]!='down') {
+        else if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) && snake[0][1]!='down' && snake[0][1]!='up') {
             buffer = snake[0][1];
             snake[0][2] = 'up';
             snake[0][0].angle = 0;
@@ -177,7 +179,7 @@ var Game = {
             }
 
         }
-        else if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) && snake[0][1]!='up') {
+        else if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) && snake[0][1]!='up' && snake[0][1]!='down') {
             buffer = snake[0][1];
             snake[0][2] = 'down';
             snake[0][0].angle = 180;
@@ -195,6 +197,27 @@ var Game = {
 
         for (var i = 0; i < snake.length; i++) {
             if (snake[i][0].y == snake[i][3] || snake[i][0].x == snake[i][4]) {
+                if (snake[i][0] == snake[0][0]) {
+                    if (snake[0][1] == 'up' && snake[0][2] == 'right' || (snake[0][1] == 'left' && snake[0][2] == 'down')) {
+                        snakeCorners.push(game.add.sprite(snake[0][0].x, snake[0][0].y, 'scorner'));
+                        snakeCorners[snakeCorners.length-1].anchor.setTo(0.5);
+                        snakeCorners[snakeCorners.length-1].angle = 90;
+                    }
+                    else if ((snake[0][1] == 'right' && snake[0][2] == 'down') || (snake[0][1] == 'up' && snake[0][2] == 'left')) {
+                        snakeCorners.push(game.add.sprite(snake[0][0].x, snake[0][0].y, 'scorner'));
+                        snakeCorners[snakeCorners.length-1].anchor.setTo(0.5);
+                        snakeCorners[snakeCorners.length-1].angle = 180;
+                    }
+                    else if ((snake[0][1] == 'left' && snake[0][2] == 'up') || (snake[0][1] == 'down' && snake[0][2] == 'right')) {
+                        snakeCorners.push(game.add.sprite(snake[0][0].x, snake[0][0].y, 'scorner'));
+                        snakeCorners[snakeCorners.length-1].anchor.setTo(0.5);
+                    }
+                    else if ((snake[0][1] == 'down' && snake[0][2] == 'left') || (snake[0][1] == 'right' && snake[0][2] == 'up')) {
+                        snakeCorners.push(game.add.sprite(snake[0][0].x, snake[0][0].y, 'scorner'));
+                        snakeCorners[snakeCorners.length-1].anchor.setTo(0.5);
+                        snakeCorners[snakeCorners.length-1].angle = -90;
+                    }
+                }
                 snake[i][1] = snake[i][2];
                 if (i < snake.length-1) {
                     snake[i+1][2] = snake[i][2];
@@ -210,31 +233,30 @@ var Game = {
             // Changes direction in which snake segments move
             for (var i = 0; i < snake.length; i++) {
                 if (snake[i][1] == 'right') {
-                    if (i < snake.length-1) {
-                        snake[i+1][0].angle = 90;
-                    }
+                    snake[i][0].angle = 90;
                     snake[i][0].x += speed;
                 }
-                else if (snake[i][1] == 'left') {
-                    if (i < snake.length-1) {
-                        snake[i+1][0].angle = -90;
-                    }
+                else if (snake[i][1] == 'left') { 
+                    snake[i][0].angle = -90;
                     snake[i][0].x += speed-(speed*2);
                 }
                 else if (snake[i][1] == 'up') {
-                    if (i < snake.length-1) {
-                        snake[i+1][0].angle = 0;
-                    }
+                    snake[i][0].angle = 0;
                     snake[i][0].y += speed-(speed*2);
                 }
                 else if (snake[i][1] == 'down') {
-                    if (i < snake.length-1) {
-                        snake[i+1][0].angle = 180;
-                    }
+                    snake[i][0].angle = 180;
                     snake[i][0].y += speed;
                 }
             }
         // }
+        if(snakeCorners.length > 0) {
+            if (snake[snake.length-1][0].x == snakeCorners[0].x && snake[snake.length-1][0].y == snakeCorners[0].y) {
+                snakeCorners[0].destroy();
+                snakeCorners.shift();
+            }
+        }
+
         /*  --------------------------------------------PELLET MOVEMENT-------------------------------------------- */
 
         // Move the player up and down based on keyboard arrows
