@@ -115,6 +115,12 @@ var Game = {
     },
 
     update: function () {
+        // game.input.keyboard.onPressCallback = function(pauseButton){
+        //     game.paused = true;
+        //     speed = 0;
+        //     fSpeed = 0;
+        //     console.log("p");
+        // }
         // if (game.keyboard.Key.lastKey == "pauseButton){
         //     console.log("test");
         //     speed = 0;
