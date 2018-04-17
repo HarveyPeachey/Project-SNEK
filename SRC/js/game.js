@@ -109,6 +109,8 @@ var Game = {
             sGroup.add(snake[i][0]);
             if (i != 1)
                 cGroup.add(snake[i][0]);
+           // var pausetxt = game.add.text(400, 36, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
+          //  pausetxt.anchor.set(0.5);
         }
         //console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
@@ -116,7 +118,37 @@ var Game = {
         game.physics.enable(cGroup, Phaser.Physics.ARCADE);
         game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
+        var pausetxt = game.add.text(510, 36, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
+        pausetxt.anchor.set(0.5);
+        pausetxt.inputEnabled = true;
+        pausetxt.events.onInputDown.add(down, this);
+        var playtxt = game.add.text(-1, -1, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
+        playtxt.anchor.set(0.5);
+        playtxt.inputEnabled = true;
+  
+        playtxt.events.onInputDown.add(pown, this);
+        function down(item) {
+           
+        music.pause();
+                
+        pausetxt.x = -1;
+        pausetxt.y = -1;
+        playtxt.x = 510;
+        playtxt.y = 36
+          
+       }
 
+
+
+        function pown(item) {
+            
+        music.play();
+                
+        pausetxt.x = 510;
+        pausetxt.y = 36;
+        playtxt.x = -1;
+        playtxt.y = -1;
+        }
 
     },
 
@@ -292,6 +324,8 @@ var Game = {
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
+                pausetxt.x = -1;
+        pausetxt.y = -1;
         }
 
         if (Game.overlapAtOffset(snake[0][0], cGroup, 0, 0)){
@@ -301,6 +335,8 @@ var Game = {
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
+                pausetxt.x = -1;
+        pausetxt.y = -1;
         }
         Game.wallCollision(snake[0][0]);
     },
