@@ -76,6 +76,7 @@ var Game = {
         banner.body.immovable = true;
         // Creates a group for the snake sprites so that collision detection can work for each piece of the snake
         sGroup = game.add.group();
+        cGroup = game.add.group();
         // Loops through and creates the initial snake based on snakeSize that is set
         for(var i = 0; i < snakeSize; i++) {
             if (i == 0) {
@@ -106,10 +107,13 @@ var Game = {
             }
             // This adds each snake to the group for use with collision detection
             sGroup.add(snake[i][0]);
+            if (i != 1)
+                cGroup.add(snake[i][0]);
         }
         //console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
+        game.physics.enable(cGroup, Phaser.Physics.ARCADE);
         game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
 
@@ -284,6 +288,15 @@ var Game = {
         if (Game.overlapAtOffset(food, sGroup, 0, 0)){
             p1Win = true;
             p1score += 3;
+
+            lossSound = game.add.audio('lSound');
+            lossSound.play();
+            game.state.start('GameOver');
+        }
+
+        if (Game.overlapAtOffset(snake[0][0], cGroup, 0, 0)){
+            p1Win = false;
+            p2score += 3;
 
             lossSound = game.add.audio('lSound');
             lossSound.play();
