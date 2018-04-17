@@ -118,11 +118,11 @@ var Game = {
         game.physics.enable(cGroup, Phaser.Physics.ARCADE);
         game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
-        var pausetxt = game.add.text(510, 36, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
+        var pausetxt = game.add.text(510, 47, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
         pausetxt.anchor.set(0.5);
         pausetxt.inputEnabled = true;
         pausetxt.events.onInputDown.add(down, this);
-        var playtxt = game.add.text(-1, -1, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
+        var playtxt = game.add.text(-11, -11, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
         playtxt.anchor.set(0.5);
         playtxt.inputEnabled = true;
   
@@ -131,10 +131,10 @@ var Game = {
            
         music.pause();
                 
-        pausetxt.x = -1;
-        pausetxt.y = -1;
+        pausetxt.x = -11;
+        pausetxt.y = -11;
         playtxt.x = 510;
-        playtxt.y = 36
+        playtxt.y = 47
           
        }
 
@@ -145,9 +145,9 @@ var Game = {
         music.play();
                 
         pausetxt.x = 510;
-        pausetxt.y = 36;
-        playtxt.x = -1;
-        playtxt.y = -1;
+        pausetxt.y = 47;
+        playtxt.x = -11;
+        playtxt.y = -11;
         }
 
     },
