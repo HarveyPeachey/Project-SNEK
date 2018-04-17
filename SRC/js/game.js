@@ -116,7 +116,21 @@ var Game = {
         game.physics.enable(cGroup, Phaser.Physics.ARCADE);
         game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
+        // Create a label to use as a button
+        pause_label = game.add.text(28, 10, 'Pause', { font: '15px Arial', fill: '#FFFF00' });
+        pause_label.inputEnabled = true;
+        pause_label.events.onInputUp.add(function () {
+        // When the paus button is pressed, we pause the game
+        game.paused = true;
+        });
+        // Add a input listener that can help us return from being paused
+        game.input.onDown.add(unpause, self);
 
+        // And finally the method that handels the pause menu
+        function unpause(event){
+            // Unpause the game
+            game.paused = false;
+        }
 
     },
 
