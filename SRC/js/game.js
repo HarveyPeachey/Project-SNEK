@@ -344,8 +344,8 @@ var Game = {
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
-                pausetxt.x = -1;
-        pausetxt.y = -1;
+               
+    
         }
 
         if (Game.overlapAtOffset(snake[0][0], cGroup, 0, 0)){
@@ -355,8 +355,8 @@ var Game = {
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
-                pausetxt.x = -1;
-        pausetxt.y = -1;
+               
+    
         }
         Game.wallCollision(snake[0][0]);
     },
