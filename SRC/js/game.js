@@ -30,7 +30,7 @@ var Game = {
         game.load.image('sbody', './assets/sprites/sbody-30px.png');
         game.load.image('stail', './assets/sprites/stail-30px.png');
         //game.load.image('scorner', './assets/sprites/scorner-50px.png');
-        game.load.audio('lSound', './assets/images/banner.jpg');
+        game.load.audio('lSound', './assets/music/lose.wav');
 
     },
 
