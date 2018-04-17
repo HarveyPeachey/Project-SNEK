@@ -185,15 +185,27 @@ var Game = {
             // Changes direction in which snake segments move
             for (var i = 0; i < snake.length; i++) {
                 if (snake[i][1] == 'right') {
+                    if (i < snake.length-1) {
+                        snake[i+1][0].angle = 90;
+                    }
                     snake[i][0].x += speed;
                 }
                 else if (snake[i][1] == 'left') {
+                    if (i < snake.length-1) {
+                        snake[i+1][0].angle = -90;
+                    }
                     snake[i][0].x += speed-(speed*2);
                 }
                 else if (snake[i][1] == 'up') {
+                    if (i < snake.length-1) {
+                        snake[i+1][0].angle = 0;
+                    }
                     snake[i][0].y += speed-(speed*2);
                 }
                 else if (snake[i][1] == 'down') {
+                    if (i < snake.length-1) {
+                        snake[i+1][0].angle = 180;
+                    }
                     snake[i][0].y += speed;
                 }
             }
