@@ -39,8 +39,6 @@ var Game = {
     },
 
     create: function () {
-        //music = game.add.audio('bg-music');
-        //music.play();
         game.physics.startSystem(Phaser.Physics.ARCADE);
         snakeSize = 10;          // This is the size of the body of the snake
         food = {};              // Object for the food piece
@@ -56,11 +54,12 @@ var Game = {
         }
 
         // Set up a Phaser controller for keyboard input.
-        cursors = game.input.keyboard.createCursorKeys();
+        //cursors = game.input.keyboard.createCursorKeys();
         upButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
         downButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
         leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        pauseButton = game.input.keyboard.addKey(Phaser.Keyboard.P);
 
         // Adds background to game
         game.add.sprite(0, 0, 'background');
@@ -109,9 +108,29 @@ var Game = {
         //console.log(snake[0][0]);
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
+        game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
+        game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
+
+
     },
 
     update: function () {
+        // if (game.keyboard.Key.lastKey == "pauseButton){
+        //     console.log("test");
+        //     speed = 0;
+        //     fspeed = 0;
+        //     game.paused = true;
+
+        // }
+        // game.input.onDown.add(unpause, self);
+
+        // function unpause(event){
+        // // Only act if paused
+        //     if(game.paused){
+        //         // Calculate the corners of the menu
+            
+        //     }
+        // }
         game.physics.arcade.collide(food, banner);
         //updateDelay++;
         levelTime = this.game.time.elapsedSecondsSince(startTime).toFixed(3);
@@ -181,7 +200,7 @@ var Game = {
             }
 
         }
-        // if (updateDelay % 10 == 0) {
+        // if (updateDelay % 60 == 0) {
             // Changes direction in which snake segments move
             for (var i = 0; i < snake.length; i++) {
                 if (snake[i][1] == 'right') {
@@ -237,6 +256,7 @@ var Game = {
         if (Game.overlapAtOffset(food, sGroup, 0, 0)){
             p1Win = true;
             p1score += 3;
+
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
@@ -312,8 +332,12 @@ var Game = {
     render: function() {
         // game.debug.spriteInfo(snake[0][0], 32, 32);
         // game.debug.text(`Direction of head: ${direction} NewDirection: ${newDirection}  NewGridsquare:${newXGridPos} Ticks:${updateDelay} Timer: ${gameTimer}`, 20, 20, 'yellow', 'Segoe UI');
-        // game.debug.text(this.game.time.elapsedSecondsSince(startTime).toFixed(3), 750, 50);
-        //game..text(350, 20, this.game.time.elapsedSecondsSince(startTime).toFixed(3), { font: '24px Arial', fill: '#000' });
+        game.debug.text("Time: " + this.game.time.elapsedSecondsSince(startTime).toFixed(3).toString(), 10, 50, '#FFFF00' , '15px Arial');
+        // var graphics = game.add.graphics(0, 0);
+        // // set a fill
+        // graphics.beginFill(0x00a651);
+        // graphics.drawRect(0, 0, 600, 60);
+        // game.add.text(50, 20, this.game.time.elapsedSecondsSince(startTime).toFixed(3), { font: '24px Arial', fill: '#000' });
     }
 }
 
