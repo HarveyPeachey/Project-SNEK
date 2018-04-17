@@ -13,14 +13,14 @@ var GameOver = {
         // Create button to start game like in Menu.
         	if (p1Win == true) {
         		this.add.button(0, 0, 'gameOver', this.startGame, this);
-				game.add.text(200, 250, "Time survived: "+levelTime.toString(), { font: '24px Arial', fill: '#080' });
-				game.add.text(200, 275, "Score: "+p1score, { font: '24px Arial', fill: '#080' });
+				game.add.text(200, 250, "Time Survived: "+levelTime.toString() +"s", { font: '24px Arial', fill: '#080' });
+				game.add.text(200, 275, "Score: "+p1score +" points",  { font: '24px Arial', fill: '#080' });
         	}
         	else
         	{
         		this.add.button(0, 0, 'gameOver2', this.startGame, this);
-				game.add.text(200, 250, "Time Taken: "+levelTime.toString(), { font: '24px Arial', fill: '#080' });
-				game.add.text(200, 275, "Score: "+p2score, { font: '24px Arial', fill: '#080' });
+				game.add.text(200, 250, "Time Taken: "+levelTime.toString() +"s", { font: '24px Arial', fill: '#080' });
+				game.add.text(200, 275, "Score: "+p2score +" points", { font: '24px Arial', fill: '#080' });
         	}
         	game.add.text(160, 330, "Click anywhere to play again", { font: '24px Arial', fill: '#080' });	
     },
