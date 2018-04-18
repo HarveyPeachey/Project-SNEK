@@ -41,7 +41,7 @@ var Game = {
 
     create: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        snakeSize = 10;          // This is the size of the body of the snake
+        snakeSize = 15;          // This is the size of the body of the snake
         snakeCorners = [];
         food = {};              // Object for the food piece
         squareSize = 30;        // Size of the grid in pixels should be same as image size of snake sprites
@@ -75,8 +75,9 @@ var Game = {
         game.physics.enable(banner, Phaser.Physics.ARCADE);
         banner.body.immovable = true;
         // Creates a group for the snake sprites so that collision detection can work for each piece of the snake
-        sGroup = game.add.group();
+        
         cGroup = game.add.group();
+        sGroup = game.add.group();
         // Loops through and creates the initial snake based on snakeSize that is set
         for(var i = 0; i < snakeSize; i++) {
             if (i == 0) {
@@ -95,7 +96,7 @@ var Game = {
                 snake[i][0].x += snake[i][0].width*0.5;
                 snake[i][0].y += snake[i][0].height*0.5;
                 snake[i][1] = 'up';
-                sGroup.add(snake[i][0]); // ?????
+                cGroup.add(snake[i][0]);
                 break;
             }
             else {
@@ -337,26 +338,22 @@ var Game = {
             food.body.velocity.x = 0;
         }
 
-        if (Game.overlapAtOffset(food, sGroup, 0, 0)){
+        if (Game.overlapAtOffset(food, sGroup, 0, 0) || Game.overlapAtOffset(food, cGroup, 0, 0)){
             p1Win = true;
             p1score += 3;
 
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
-               
-    
         }
 
-        if (Game.overlapAtOffset(snake[0][0], cGroup, 0, 0)){
+        else if (Game.overlapAtOffset(snake[0][0], cGroup, 0, 0)){
             p1Win = false;
             p2score += 3;
 
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
-               
-    
         }
         Game.wallCollision(snake[0][0]);
     },
