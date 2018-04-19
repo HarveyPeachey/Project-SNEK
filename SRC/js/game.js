@@ -122,22 +122,30 @@ var Game = {
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
         game.physics.enable(cGroup, Phaser.Physics.ARCADE);
-        game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
-        game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
+        game.add.text(150, 36, "Player 1 Score: "+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
+        game.add.text(320, 36, "Player 2 Score: "+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         // Create a label to use as a button
-        pause_label = game.add.text(28, 10, 'Pause', { font: '15px Arial', fill: '#FFFF00' });
+        pause_label = game.add.text(48, 30, 'Pause', { font: '15px Arial', fill: '#FFFF00' });
+        pause_label.anchor.set(0.5);
         pause_label.inputEnabled = true;
-        pause_label.events.onInputUp.add(function () {
-        // When the paus button is pressed, we pause the game
-        game.paused = true;
-        });
+        
+        play_label = game.add.text(-15, -15, 'Pause', { font: '15px Arial', fill: '#FFFF00' });
+        play_label.anchor.set(0.5);
+        play_label.inputEnabled = true;
+        // Add a input listener that can help us pause the game
+        pause_label.events.onInputUp.add(pause)
         // Add a input listener that can help us return from being paused
-        game.input.onDown.add(unpause, self);
+        play_label.events.onInputUp.add(unpause, self);
+
+        function pause(event){
+            game.paused = true; pause_label.x = -15; pause_label.y = -15; play_label.x = 48; play_label.y = 30;
+        }
 
         // And finally the method that handels the pause menu
         function unpause(event){
             // Unpause the game
-            game.paused = false;
+            game.paused = false; pause_label.x = 48; pause_label.y = 30; play_label.x = -15; play_label.y = -15;
+
         }
         var pausetxt = game.add.text(510, 47, "Mute Music", { font: '15px Arial', fill: '#FFFF00' });
         pausetxt.anchor.set(0.5);
