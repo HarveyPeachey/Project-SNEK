@@ -117,11 +117,6 @@ var Game = {
         // Make the player collide with the bounds of the world
         game.physics.enable(sGroup, Phaser.Physics.ARCADE);
         game.physics.enable(cGroup, Phaser.Physics.ARCADE);
-        game.add.text(150, 36, "Player 1 Score:"+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
-        game.add.text(320, 36, "Player 2 Score:"+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
-        // Make the player collide with the bounds of the world
-        game.physics.enable(sGroup, Phaser.Physics.ARCADE);
-        game.physics.enable(cGroup, Phaser.Physics.ARCADE);
         game.add.text(150, 36, "Player 1 Score: "+p1score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         game.add.text(320, 36, "Player 2 Score: "+p2score.toString(), { font: '15px Arial', fill: '#FFFF00' });
         // Create a label to use as a button
