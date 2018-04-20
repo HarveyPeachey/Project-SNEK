@@ -141,7 +141,7 @@ var Game = {
             game.paused = true; pause_label.x = -15; pause_label.y = -15; play_label.x = 48; play_label.y = 30;
         }
 
-        // And finally the method that handels the pause menu
+        // And finally the method that handles the pause menu
         function unpause(event){
             // Unpause the game
             game.paused = false; pause_label.x = 48; pause_label.y = 30; play_label.x = -15; play_label.y = -15;
@@ -323,7 +323,7 @@ var Game = {
             food.body.velocity.x = 0;
         }
 
-        if (Game.overlapAtOffset(food, sGroup, 0, 0) || Game.overlapAtOffset(food, cGroup, 0, 0)){
+        if (Game.offsetGroup(food, sGroup, 0, 0) || Game.offsetGroup(food, cGroup, 0, 0)){
             p1Win = true;
             p1score += 3;
             lossSound = game.add.audio('lSound');
@@ -331,54 +331,54 @@ var Game = {
             game.state.start('GameOver');
         }
 
-        else if (Game.overlapAtOffset(snake[0][0], cGroup, 0, 0)){
+        else if (Game.offsetGroup(snake[0][0], cGroup, 0, 0)){
             p1Win = false;
             p2score += 3;
             lossSound = game.add.audio('lSound');
             lossSound.play();
             game.state.start('GameOver');
         }
-        Game.wallCollision(snake[0][0]);
+        Game.wallC(snake[0][0]);
     },
     /*  --------------------------------------------COLLISION BETWEEN SPRITE BODIES-------------------------------------------- */
 
     // Checks whether two sprites overlap up to a certain offset
-       overlapAtOffsetSprite: function(object1, object2, offsetX, offsetY) {
+       offsetSprite: function(object1, object2, offsetX, offsetY) {
         //if either of the parameters passed aren't sprites
         if (typeof(object1.body) === "undefined" || typeof(object2.body) === "undefined") {
             return false;
         }
-        // Creates a new sprite shape from which the overlap will be greater dpeending on the offsets set by the user
-        var bounds1 = new Phaser.Rectangle((object1.position.x + object1.body.offset.x - 0.2 * object1.width / object1.scale.x + offsetX),(object1.position.y + object1.body.offset.y - 0 * object1.height / object1.scale.y + offsetY),(object1.body.width*0.4), (object1.body.height*0.4));
-        var bounds2 = new Phaser.Rectangle(object2.position.x + object2.body.offset.x -
-            0.2 * object2.width / object2.scale.x,
-            object2.position.y + object2.body.offset.y -
-            0 * object2.height / object1.scale.y,
-            object2.body.width*0.6, object2.body.height*0.6);
-        return Phaser.Rectangle.intersects(bounds1, bounds2);
+        // Creates a new sprite shape from which the overlap will be greater depending on the offsets set by the user
+        var rect1 = new Phaser.Rectangle((object1.position.x + object1.body.offset.x - 0.2 * object1.width / object1.scale.x + offsetX),(object1.position.y + object1.body.offset.y - 0 * object1.height / object1.scale.y + offsetY),(object1.body.width*0.4), (object1.body.height*0.4));
+        var rect2 = new Phaser.Rectangle(object2.position.x + object2.body.offset.x -
+                                                        0.2 * object2.width / object2.scale.x,
+                                                        object2.position.y + object2.body.offset.y -
+                                                        0 * object2.height / object1.scale.y,
+                                                        object2.body.width*0.6, object2.body.height*0.6);
+        return Phaser.Rectangle.intersects(rect1, rect2);
     },
     // This function is used when either of the sprites needed to be checked are a group of sprites
-    overlapAtOffset: function(object1, object2, offsetX, offsetY) {
+    offsetGroup: function(object1, object2, offsetX, offsetY) {
         // If the first parameter is a group rather than a singular sprite then loop check the overlap against every sprite
         if (object1.physicsType == Phaser.GROUP) {
             for (var i = 0; i < object1.children.length; i++) {
-                if (Game.overlapAtOffset(object1.children[i], object2, offsetX, offsetY))
+                if (Game.offsetGroup(object1.children[i], object2, offsetX, offsetY))
                     return true;
             }
             // If the second parameter is a group, then loop
         } else if (object2.physicsType == Phaser.GROUP) {
             for (var i = 0; i < object2.children.length; i++) {
-                if (Game.overlapAtOffset(object1, object2.children[i], offsetX, offsetY))
+                if (Game.offsetGroup(object1, object2.children[i], offsetX, offsetY))
                     return true;
             }
             // Otherwise it is singular
         } else {
-            return Game.overlapAtOffsetSprite(object1, object2, offsetX, offsetY);
+            return Game.offsetSprite(object1, object2, offsetX, offsetY);
         }
         return false;
     },
 
-    wallCollision: function(head) {
+    wallC: function(head) {
 
         // Check if the head of the snake is in the boundaries of the game field.
 
