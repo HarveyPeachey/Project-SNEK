@@ -200,6 +200,7 @@ var Game = {
             }
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) && snake[0][1]!='right' && snake[0][1]!='left') {
+            snake[0][2] = 'left';
             snake[0][0].angle = -90;
             if (snake[0][1] == 'up') {
                 snake[0][3] =  snake[0][0].y - ((snake[0][0].y + snake[0][0].width*0.5) % squareSize);
@@ -220,7 +221,6 @@ var Game = {
 
         }
         else if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) && snake[0][1]!='up' && snake[0][1]!='down') {
-            buffer = snake[0][1];
             snake[0][2] = 'down';
             snake[0][0].angle = 180;
             if (snake[0][1] == 'left') {
