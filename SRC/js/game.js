@@ -12,7 +12,6 @@
     rightButton,
     updateDelay,
     gameTimer,
-    buffer,
     startTime,
     lossSound,
     snakeCorners;
@@ -21,8 +20,7 @@
 var Game = {
 
     preload: function () {
-        // Here we load all the needed resources for the level.
-        // In our case, that's just two squares - one for the snake body and one for the apple.
+        // This is where all image assets and sounds are loaded before the game starts
         game.load.image('banner', './assets/images/banner.jpg');
         game.load.image('background', './assets/images/backgroundgrid.jpg');
         game.load.image('food', './assets/sprites/pellet-30px.png');
