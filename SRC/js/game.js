@@ -128,9 +128,9 @@ var Game = {
         play_label.anchor.set(0.5);
         play_label.inputEnabled = true;
         // Add a input listener that can help us pause the game
-        pause_label.events.onInputUp.add(pause)
+        pause_label.events.onInputUp.add(pause, this)
         // Add a input listener that can help us return from being paused
-        play_label.events.onInputUp.add(unpause, self);
+        play_label.events.onInputUp.add(unpause, this);
 
         function pause(event){
             game.paused = true; pause_label.x = -15; pause_label.y = -15; play_label.x = 48; play_label.y = 30;
